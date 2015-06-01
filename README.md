@@ -1,6 +1,7 @@
 # Cluster
 
 Sample seed for creating cluster for web application.
+
 Cluster is built basing on:
 - Nginx: HTTP Server
 - Haproxy: Load Balancer
@@ -29,6 +30,7 @@ Basic cluster configuration looks like following:
 ```
 
 Each node is composed of running services of application and LB.
+
 Each service is run on separate Docker container.
 
 
