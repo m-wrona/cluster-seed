@@ -1,5 +1,4 @@
 ---
-# This playbook deploys the package jar to remote server.
 
 - hosts: all
   sudo: yes

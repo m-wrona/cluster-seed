@@ -10,5 +10,11 @@ log_root_dir: "/var/log/{{ app_name }}/{{ env }}"
 #packages
 fe_dir: "../../fe"
 
-# docker images
+# haproxy
+haproxy_stats_user: 'admin'
+haproxy_stats_password: 'admin'
+haproxy_stats_port: 8444
+
+# docker
 nginx_image: nginx
+haproxy_image: haproxy

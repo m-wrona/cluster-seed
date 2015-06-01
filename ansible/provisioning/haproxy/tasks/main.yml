@@ -1,0 +1,15 @@
+---
+
+- name: Check if haproxy docker image is present
+  shell: "docker images -q {{ haproxy_image }}"
+  register: is_haproxy_image_present
+  tags:
+    - haproxy
+    - provision
+
+- name: Download haproxy image if it's not present
+  shell: "docker pull {{ haproxy_image }}"
+  tags:
+    - haproxy
+    - provision
+  when: is_haproxy_image_present.stdout == ""

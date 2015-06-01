@@ -14,3 +14,8 @@ nginx_instances:
   - name: "{{ app_name }}-nginx-{{ env }}-1"
     http_port: 80
     https_port: 443
+
+
+# haproxy
+haproxy_instances:
+  - name: "{{ app_name }}-haproxy-{{ env }}-1"

@@ -1,0 +1,38 @@
+---
+
+- name: Enable haproxy on startup
+  copy: src=default.cfg dest= {{ default_config }}
+
+- name: Configure haproxy instance
+  template: src=haproxy.cfg.j2 dest={{ config_dir }}/haproxy.cfg owner=root group=root mode=0644
+
+- name: Stop haproxy docker containers
+  tags:
+    - haproxy
+    - deploy
+    - just-restart
+    - just-stop
+  docker:
+    name: "{{ item.name }}"
+    image: "{{ haproxy_image }}"
+    state: stopped
+  with_items: haproxy_instances
+
+- name: Start haproxy using docker
+  tags:
+    - haproxy
+    - deploy
+    - just-restart
+  docker:
+    name: "{{ item.name }}"
+    image: "{{ haproxy_image }}"
+    state: reloaded
+    restart_policy: always
+    ports:
+    - "{{ http_port }}:{{ item.http_port }}"
+    - "{{ https_port }}:{{ item.https_port }}"
+    volumes:
+    - "{{ default_config }}:{{ haproxy_default_config }}"
+    - "{{ config_dir }}:{{ haproxy_config_dir }}"
+    - "{{ log_dir }}:/var/log/haproxy"
+  with_items: haproxy_instances
