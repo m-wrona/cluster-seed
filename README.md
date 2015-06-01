@@ -68,6 +68,21 @@ cd ansible
 ansible-playbook -i {{env}} deployment/site.yml
 ```
 
+After deployment running instances can be checked using following command:
+
+```shell 
+ansible all -i {{env}} -a "docker ps"
+```
+
+Sample output of "docker ps":
+
+```preformated
+node1 | success | rc=0 >>
+CONTAINER ID        IMAGE               COMMAND                CREATED             STATUS              PORTS                                           NAMES
+fe21c4a1b156        nginx:latest        "nginx -g 'daemon of   2 minutes ago       Up 2 minutes        0.0.0.0:80->80/tcp, 0.0.0.0:443->443/tcp        cluster-seed-nginx-dev
+```
+
+
 # Ansible - common commands
 
 Some samples of handy commands to be familiar with. 
