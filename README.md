@@ -33,6 +33,23 @@ Each node is composed of running services of application and LB.
 
 Each service is run on separate Docker container.
 
+# Environments 
+
+Due to virtualization all environments can be deployed on single cluster.
+
+Docker will ensure proper sandboxing between environments.
+
+For demo purposes application can be deplyed per following environments:
+
+- local: run on local VMs
+- dev: development run on cluster
+- prod: production run on cluster
+
+The other approach is to deploy application per version what enables to make canary releases on cluster.
+
+More info about canary releases can be found in [Martin Fowler's article](http://martinfowler.com/bliki/CanaryRelease.html).
+
+
 # Provisioning
 
 Install all depedendencies and prepare cluster for deployment.
@@ -55,13 +72,13 @@ ansible-playbook -i {{env}} deployment/site.yml
 
 Some samples of handy commands to be familiar with. 
 
-1. Ping
+1) Ping
 
 ```shell
 ansible all -i {{env}} -m ping
 ```
 
-2. Run a command on all servers
+2) Run a command on all servers
 
 ```shell
 ansible all -i {{env}} -a "whoami"
@@ -71,7 +88,7 @@ ansible all -i {{env}} -a "cat /etc/issue"
 ansible all -i {{env}} -a "docker ps"
 ```
 
-3. Show memory, cpu and other config options on all servers
+3) Show memory, cpu and other config options on all servers
 
 ```shell
 ansible all -i {{env}} -m setup
@@ -81,14 +98,14 @@ ansible all -i {{env}} -m setup -a "filter=ansible_all_ipv4_addresses"
 ansible all -i {{env}} -m setup -a "filter=ansible_bios_*"
 ```
 
-5. Run playbook
+4) Run playbook
 
 ```shell
 ansible-playbook -i {{env}} deployment/site.yml --ask-sudo-pass
 ansible-playbook -i {{env}} deployment/site.yml --tags nginx --ask-sudo-pass
 ```
 
-6. Dry-run, i.e. only check and report what changes should be made without actually executing them
+5) Dry-run, i.e. only check and report what changes should be made without actually executing them
 
 ```shell
 ansible-playbook -i {{env}} deployment/site.yml --tags "nginx" --ask-sudo-pass --check
