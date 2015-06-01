@@ -1,0 +1,16 @@
+---
+
+env: dev
+
+# ports available for the public
+http_port: 80
+https_port: 443
+
+# main app settings
+app_url: "{{ hostvars.node1.ansible_ssh_host }}:{{ https_port }}"
+
+# nginx docker instances
+nginx_instances:
+  - name: "{{ app_name }}-nginx-{{ env }}-1"
+    http_port: 80
+    https_port: 443

@@ -1,0 +1,15 @@
+---
+
+# Base packages
+- name: Install pip
+  apt: name=python-pip state=present
+  tags:
+    - base
+    - provision
+
+- name: Make sure pip upgraded
+  command: easy_install -U pip
+  tags:
+      - base
+      - provision
+

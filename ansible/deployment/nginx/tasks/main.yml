@@ -1,0 +1,87 @@
+---
+
+- name: Create nginx html directory
+  file: path={{ html_dir }} state=directory mode="u=rwx,g=xr,o=x"
+  tags:
+    - nginx
+    - deploy
+
+- name: Create nginx config directory
+  file: path={{ config_dir }} state=directory mode="u=rwx,g=xr,o=x"
+  tags:
+    - nginx
+    - deploy
+
+- name: Create nginx log directory
+  file: path={{ log_dir }} state=directory mode="u=rwx,g=rwx,o=rx"
+  tags:
+    - nginx
+    - deploy
+
+- name: Create nginx SSL directory
+  file: path={{ cert_dir }} state=directory mode="u=rx,g=r,o=r"
+  tags:
+    - nginx
+    - deploy
+
+- name: Copy nginx error page for unhandled 40x errors
+  template: src=40x.html dest={{ html_dir }} mode="u=rx,g=rx,o=rx"
+  tags:
+      - nginx
+      - deploy
+
+- name: Copy nginx error page for unhandled 50x errors
+  template: src=50x.html dest={{ html_dir }} mode="u=rx,g=rx,o=rx"
+  tags:
+      - nginx
+      - deploy
+
+- name: Copy nginx configuration
+  template: src=default.conf dest={{ config_dir }} mode="u=rx,g=rx,o=rx"
+  tags:
+      - nginx
+      - deploy
+
+- name: Copy nginx SSL certificate
+  copy: src={{ env }}.crt dest={{ cert_dir }}/{{ app_name }}.crt mode="u=rx,g=rx,o=rx"
+  tags:
+      - nginx
+      - deploy
+
+- name: Copy nginx SSL public key
+  copy: src={{ env }}.key dest={{ cert_dir }}/{{ app_name }}.key mode="u=rx,g=rx,o=rx"
+  tags:
+      - nginx
+      - deploy
+
+- name: Stop nginx docker containers
+  tags:
+    - nginx
+    - deploy
+    - just-restart
+    - just-stop
+  docker:
+    name: "{{ item.name }}"
+    image: "{{ nginx_image }}"
+    state: stopped
+  with_items: nginx_instances
+
+- name: Start nginx using docker
+  tags:
+    - nginx
+    - deploy
+    - just-restart
+  docker:
+    name: "{{ item.name }}"
+    image: "{{ nginx_image }}"
+    state: reloaded
+    restart_policy: always
+    ports:
+    - "{{ http_port }}:{{ item.http_port }}"
+    - "{{ https_port }}:{{ item.https_port }}"
+    volumes:
+    - "{{ html_dir }}:{{ nginx_html_dir }}"
+    - "{{ config_dir }}:{{ nginx_config_dir }}"
+    - "{{ log_dir }}:/var/log/nginx"
+    - "{{ cert_dir }}:{{ cert_dir }}"
+  with_items: nginx_instances

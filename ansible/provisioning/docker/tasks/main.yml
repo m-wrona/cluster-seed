@@ -1,0 +1,27 @@
+---
+
+- name: Install docker-py
+  pip: name=docker-py version=1.1.0
+  tags:
+    - docker
+    - provision
+
+- name: Check if docker is installed
+  stat: path="/usr/bin/docker"
+  register: is_docker_cmd_present
+  tags:
+    - docker
+    - provision
+
+- name: Install docker if it's not present
+  shell: wget -qO- https://get.docker.com/ | sh
+  when: not is_docker_cmd_present.stat.exists
+  tags:
+    - docker
+    - provision
+
+- name: Create docker remote directory
+  file: path={{ remote_docker_dir }} state=directory
+  tags:
+    - docker
+    - provision
