@@ -54,6 +54,12 @@
       - nginx
       - deploy
 
+- name: Copy FE to nginx
+  copy: src={{ fe_dir }}/ dest={{ html_dir }}/{{ app_name }} mode="u=rx,g=rx,o=rx"
+  tags:
+      - nginx
+      - deploy
+
 - name: Stop nginx docker containers
   tags:
     - nginx
