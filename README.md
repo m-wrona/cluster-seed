@@ -4,7 +4,7 @@ Sample seed for creating cluster for web application.
 
 Cluster is built basing on:
 - Nginx: HTTP Server
-- Haproxy: Load Balancer
+- Nginx: Load Balancer (separate instance)
 - Docker: virtualization 
 - Ansible: deployment & provisioning
 
@@ -37,13 +37,17 @@ Each service is run on separate Docker container.
 
 Due to virtualization all environments can be deployed on single cluster.
 
-Docker will ensure proper sandboxing between environments.
+Docker will ensure proper sand-boxing between environments.
 
-For demo purposes application can be deplyed per following environments:
+Application can be deplyed per chosen environment, for instance:
 
-- local: run on local VMs
-- dev: development run on cluster
-- prod: production run on cluster
+- local: run on local VMs (defined for demo purposes)
+- dev: development run on cluster (not defined - has to be added)
+- prod: production run on cluster (not defined - has to be added)
+
+Take a notice that due to Docker usage, dev and prod can be deployed on the same physical cluster.
+
+In such case they will be run separately as virtual clusters on the same physical machines.
 
 The other approach is to deploy application per version what enables to make canary releases on cluster.
 
