@@ -79,7 +79,8 @@ Sample output of "docker ps":
 ```preformated
 node1 | success | rc=0 >>
 CONTAINER ID        IMAGE               COMMAND                CREATED             STATUS              PORTS                                           NAMES
-fe21c4a1b156        nginx:latest        "nginx -g 'daemon of   2 minutes ago       Up 2 minutes        0.0.0.0:80->80/tcp, 0.0.0.0:443->443/tcp        cluster-seed-nginx-dev
+9a3ee3b0b973        nginx:latest        "nginx -g 'daemon of   50 seconds ago      Up 49 seconds       0.0.0.0:80->80/tcp, 0.0.0.0:443->443/tcp        cluster-seed-dev-lb-1   
+b5b5663bea08        nginx:latest        "nginx -g 'daemon of   53 seconds ago      Up 52 seconds       0.0.0.0:10000->80/tcp, 0.0.0.0:10001->443/tcp   cluster-seed-dev-fe-1
 ```
 
 

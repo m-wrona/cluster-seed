@@ -7,13 +7,25 @@ app_root_dir: "/usr/share/{{ app_name }}/{{ env }}"
 cert_dir: "{{ app_root_dir }}/ssl"
 log_root_dir: "/var/log/{{ app_name }}/{{ env }}"
 
-#packages
+# packages
 fe_dir: "../../../../fe"
-
-# haproxy
-haproxy_stats_user: 'admin'
-haproxy_stats_password: 'admin'
-haproxy_stats_port: 8444
 
 # docker
 nginx_image: nginx
+
+# ports available for the public (main cluster IO point)
+http_port: 80
+https_port: 443
+
+# nginx docker instances with ports for outside world
+fe_instances:
+  - name: "{{ app_name }}-{{ env }}-fe-1"
+    http_port: 10000
+    https_port: 10001
+
+
+# load balancer docker instances with ports for outside world
+lb_instances:
+  - name: "{{ app_name }}-{{ env }}-lb-1"
+    http_port: 80
+    https_port: 443
