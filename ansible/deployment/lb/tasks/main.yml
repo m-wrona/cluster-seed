@@ -54,12 +54,6 @@
       - loadbalancer
       - deploy
 
-- name: Copy FE to loadbalancer
-  copy: src={{ fe_dir }}/ dest={{ html_dir }}/{{ app_name }} mode="u=rx,g=rx,o=rx"
-  tags:
-      - loadbalancer
-      - deploy
-
 - name: Stop loadbalancer docker containers
   tags:
     - loadbalancer

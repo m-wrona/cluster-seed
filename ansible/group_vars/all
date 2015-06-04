@@ -8,7 +8,7 @@ cert_dir: "{{ app_root_dir }}/ssl"
 log_root_dir: "/var/log/{{ app_name }}/{{ env }}"
 
 #packages
-fe_dir: "../../fe"
+fe_dir: "../../../../fe"
 
 # haproxy
 haproxy_stats_user: 'admin'

@@ -42,19 +42,7 @@
       - frontend
       - deploy
 
-- name: Copy frontend SSL certificate
-  copy: src={{ env }}.crt dest={{ cert_dir }}/{{ app_name }}.crt mode="u=rx,g=rx,o=rx"
-  tags:
-      - frontend
-      - deploy
-
-- name: Copy frontend SSL public key
-  copy: src={{ env }}.key dest={{ cert_dir }}/{{ app_name }}.key mode="u=rx,g=rx,o=rx"
-  tags:
-      - frontend
-      - deploy
-
-- name: Copy FE to frontend
+- name: Copy FE package to frontend
   copy: src={{ fe_dir }}/ dest={{ html_dir }}/{{ app_name }} mode="u=rx,g=rx,o=rx"
   tags:
       - frontend
