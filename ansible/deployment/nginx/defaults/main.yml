@@ -1,9 +1,0 @@
----
-
-html_dir: "{{ app_root_dir }}/nginx/html"
-nginx_html_dir: /usr/share/nginx/html
-
-config_dir: "{{ app_root_dir }}/nginx/conf"
-nginx_config_dir: /etc/nginx/conf.d
-
-log_dir: "{{ log_root_dir }}/nginx"

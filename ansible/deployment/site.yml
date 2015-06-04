@@ -3,5 +3,5 @@
 - hosts: all
   sudo: yes
   roles:
-    - nginx
-    - haproxy
+    - fe
+    - lb

@@ -1,68 +1,68 @@
 ---
 
-- name: Create nginx html directory
+- name: Create loadbalancer html directory
   file: path={{ html_dir }} state=directory mode="u=rwx,g=xr,o=x"
   tags:
-    - nginx
+    - loadbalancer
     - deploy
 
-- name: Create nginx config directory
+- name: Create loadbalancer config directory
   file: path={{ config_dir }} state=directory mode="u=rwx,g=xr,o=x"
   tags:
-    - nginx
+    - loadbalancer
     - deploy
 
-- name: Create nginx log directory
+- name: Create loadbalancer log directory
   file: path={{ log_dir }} state=directory mode="u=rwx,g=rwx,o=rx"
   tags:
-    - nginx
+    - loadbalancer
     - deploy
 
-- name: Create nginx SSL directory
+- name: Create loadbalancer SSL directory
   file: path={{ cert_dir }} state=directory mode="u=rx,g=r,o=r"
   tags:
-    - nginx
+    - loadbalancer
     - deploy
 
-- name: Copy nginx error page for unhandled 40x errors
+- name: Copy loadbalancer error page for unhandled 40x errors
   template: src=40x.html dest={{ html_dir }} mode="u=rx,g=rx,o=rx"
   tags:
-      - nginx
+      - loadbalancer
       - deploy
 
-- name: Copy nginx error page for unhandled 50x errors
+- name: Copy loadbalancer error page for unhandled 50x errors
   template: src=50x.html dest={{ html_dir }} mode="u=rx,g=rx,o=rx"
   tags:
-      - nginx
+      - loadbalancer
       - deploy
 
-- name: Copy nginx configuration
+- name: Copy loadbalancer configuration
   template: src=default.conf dest={{ config_dir }} mode="u=rx,g=rx,o=rx"
   tags:
-      - nginx
+      - loadbalancer
       - deploy
 
-- name: Copy nginx SSL certificate
+- name: Copy loadbalancer SSL certificate
   copy: src={{ env }}.crt dest={{ cert_dir }}/{{ app_name }}.crt mode="u=rx,g=rx,o=rx"
   tags:
-      - nginx
+      - loadbalancer
       - deploy
 
-- name: Copy nginx SSL public key
+- name: Copy loadbalancer SSL public key
   copy: src={{ env }}.key dest={{ cert_dir }}/{{ app_name }}.key mode="u=rx,g=rx,o=rx"
   tags:
-      - nginx
+      - loadbalancer
       - deploy
 
-- name: Copy FE to nginx
+- name: Copy FE to loadbalancer
   copy: src={{ fe_dir }}/ dest={{ html_dir }}/{{ app_name }} mode="u=rx,g=rx,o=rx"
   tags:
-      - nginx
+      - loadbalancer
       - deploy
 
-- name: Stop nginx docker containers
+- name: Stop loadbalancer docker containers
   tags:
-    - nginx
+    - loadbalancer
     - deploy
     - just-restart
     - just-stop
@@ -70,11 +70,11 @@
     name: "{{ item.name }}"
     image: "{{ nginx_image }}"
     state: stopped
-  with_items: nginx_instances
+  with_items: lb_instances
 
-- name: Start nginx using docker
+- name: Start loadbalancer using docker
   tags:
-    - nginx
+    - loadbalancer
     - deploy
     - just-restart
   docker:
@@ -90,4 +90,4 @@
     - "{{ config_dir }}:{{ nginx_config_dir }}"
     - "{{ log_dir }}:/var/log/nginx"
     - "{{ cert_dir }}:{{ cert_dir }}"
-  with_items: nginx_instances
+  with_items: lb_instances

@@ -1,0 +1,93 @@
+---
+
+- name: Create frontend html directory
+  file: path={{ html_dir }} state=directory mode="u=rwx,g=xr,o=x"
+  tags:
+    - frontend
+    - deploy
+
+- name: Create frontend config directory
+  file: path={{ config_dir }} state=directory mode="u=rwx,g=xr,o=x"
+  tags:
+    - frontend
+    - deploy
+
+- name: Create frontend log directory
+  file: path={{ log_dir }} state=directory mode="u=rwx,g=rwx,o=rx"
+  tags:
+    - frontend
+    - deploy
+
+- name: Create frontend SSL directory
+  file: path={{ cert_dir }} state=directory mode="u=rx,g=r,o=r"
+  tags:
+    - frontend
+    - deploy
+
+- name: Copy frontend error page for unhandled 40x errors
+  template: src=40x.html dest={{ html_dir }} mode="u=rx,g=rx,o=rx"
+  tags:
+      - frontend
+      - deploy
+
+- name: Copy frontend error page for unhandled 50x errors
+  template: src=50x.html dest={{ html_dir }} mode="u=rx,g=rx,o=rx"
+  tags:
+      - frontend
+      - deploy
+
+- name: Copy frontend configuration
+  template: src=default.conf dest={{ config_dir }} mode="u=rx,g=rx,o=rx"
+  tags:
+      - frontend
+      - deploy
+
+- name: Copy frontend SSL certificate
+  copy: src={{ env }}.crt dest={{ cert_dir }}/{{ app_name }}.crt mode="u=rx,g=rx,o=rx"
+  tags:
+      - frontend
+      - deploy
+
+- name: Copy frontend SSL public key
+  copy: src={{ env }}.key dest={{ cert_dir }}/{{ app_name }}.key mode="u=rx,g=rx,o=rx"
+  tags:
+      - frontend
+      - deploy
+
+- name: Copy FE to frontend
+  copy: src={{ fe_dir }}/ dest={{ html_dir }}/{{ app_name }} mode="u=rx,g=rx,o=rx"
+  tags:
+      - frontend
+      - deploy
+
+- name: Stop frontend docker containers
+  tags:
+    - frontend
+    - deploy
+    - just-restart
+    - just-stop
+  docker:
+    name: "{{ item.name }}"
+    image: "{{ nginx_image }}"
+    state: stopped
+  with_items: fe_instances
+
+- name: Start frontend using docker
+  tags:
+    - frontend
+    - deploy
+    - just-restart
+  docker:
+    name: "{{ item.name }}"
+    image: "{{ nginx_image }}"
+    state: reloaded
+    restart_policy: always
+    ports:
+    - "{{ item.http_port }}:{{ http_port }}"
+    - "{{ item.https_port }}:{{ https_port }}"
+    volumes:
+    - "{{ html_dir }}:{{ nginx_html_dir }}"
+    - "{{ config_dir }}:{{ nginx_config_dir }}"
+    - "{{ log_dir }}:/var/log/nginx"
+    - "{{ cert_dir }}:{{ cert_dir }}"
+  with_items: fe_instances
