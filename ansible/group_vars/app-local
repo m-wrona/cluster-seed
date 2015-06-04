@@ -12,10 +12,12 @@ app_url: "{{ hostvars.node1.ansible_ssh_host }}:{{ https_port }}"
 # nginx docker instances
 nginx_instances:
   - name: "{{ app_name }}-nginx-{{ env }}-1"
-    http_port: 80
-    https_port: 443
+    http_port: 10000
+    https_port: 10001
 
 
 # haproxy
 haproxy_instances:
   - name: "{{ app_name }}-haproxy-{{ env }}-1"
+    http_port: 10100
+    https_port: 10101

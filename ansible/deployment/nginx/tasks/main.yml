@@ -83,8 +83,8 @@
     state: reloaded
     restart_policy: always
     ports:
-    - "{{ http_port }}:{{ item.http_port }}"
-    - "{{ https_port }}:{{ item.https_port }}"
+    - "{{ item.http_port }}:{{ http_port }}"
+    - "{{ item.https_port }}:{{ https_port }}"
     volumes:
     - "{{ html_dir }}:{{ nginx_html_dir }}"
     - "{{ config_dir }}:{{ nginx_config_dir }}"

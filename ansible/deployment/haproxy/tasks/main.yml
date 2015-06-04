@@ -1,7 +1,13 @@
 ---
 
+- name: Create haproxy config directory
+  file: path={{ config_dir }} state=directory mode="u=rwx,g=xr,o=x"
+  tags:
+    - haproxy
+    - deploy
+
 - name: Enable haproxy on startup
-  copy: src=default.cfg dest= {{ default_config }}
+  copy: src=default.cfg dest={{ config_dir }} mode="u=rx,g=rx,o=rx"
 
 - name: Configure haproxy instance
   template: src=haproxy.cfg.j2 dest={{ config_dir }}/haproxy.cfg owner=root group=root mode=0644
@@ -32,7 +38,7 @@
     - "{{ http_port }}:{{ item.http_port }}"
     - "{{ https_port }}:{{ item.https_port }}"
     volumes:
-    - "{{ default_config }}:{{ haproxy_default_config }}"
+    - "{{ config_dir }}/default.cfg:{{ haproxy_default_config }}"
     - "{{ config_dir }}:{{ haproxy_config_dir }}"
-    - "{{ log_dir }}:/var/log/haproxy"
+    - "{{ log_dir }}:/dev/log"
   with_items: haproxy_instances

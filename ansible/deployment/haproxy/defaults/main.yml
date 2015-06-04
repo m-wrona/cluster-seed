@@ -1,9 +1,7 @@
 ---
 
 haproxy_default_config: /etc/default/haproxy
-default_config: "{{ app_root_dir }}/haproxy/default"
-
-haproxy_config_dir: /etc/haproxy
+haproxy_config_dir: /usr/local/etc/haproxy
 config_dir: "{{ app_root_dir }}/haproxy/config"
 
 log_dir: "{{ log_root_dir }}/haproxy"

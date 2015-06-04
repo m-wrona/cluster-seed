@@ -10,14 +10,14 @@
 # hosts from appservers group.
 
 global
-    log /dev/log    local0
-    log /dev/log    local1 notice
+    log 127.0.0.1    local0
+    log 127.0.0.1    local1 notice
     chroot /var/lib/haproxy
     stats socket /var/run/haproxy.sock level admin # This socket has to be exposed for Ansible haproxy module (on admin level)
     stats timeout 30s
     user haproxy
     group haproxy
-    daemon
+    # daemon
 
 defaults
     log     global
@@ -31,9 +31,9 @@ defaults
 frontend loadbalancers
     bind *:{{ http_port }}
     mode http
-    default_backend appservers
+    default_backend {{ app_name }}
 
-backend appservers
+backend {{ app_name }}
     mode http
     balance roundrobin
     option forwardfor
@@ -41,8 +41,8 @@ backend appservers
     http-request add-header X-Forwarded-Proto https if { ssl_fc }
     option httpchk GET /
 
-{% for host in groups['app-{{ env }}'] %}
-    server app{{ loop.index }} {{ hostvars[host].ansible_ssh_host }}:{{ hostvars[host].app_port }} check
+{% for host in groups['app-local'] %}
+    server app{{ loop.index }} {{ hostvars[host].ansible_ssh_host }}:10001 check
 {% endfor %}
 
 listen stats *:{{ haproxy_stats_port }}
