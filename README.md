@@ -53,7 +53,6 @@ The other approach is to deploy application per version what enables to make can
 
 More info about canary releases can be found in [Martin Fowler's article](http://martinfowler.com/bliki/CanaryRelease.html).
 
-
 # Provisioning
 
 Install all depedendencies and prepare cluster for deployment.
@@ -87,6 +86,22 @@ CONTAINER ID        IMAGE               COMMAND                CREATED          
 b5b5663bea08        nginx:latest        "nginx -g 'daemon of   53 seconds ago      Up 52 seconds       0.0.0.0:10000->80/tcp, 0.0.0.0:10001->443/tcp   cluster-seed-dev-fe-1
 ```
 
+# Vagrant
+
+To speed up local testing & usage vagrant configuration is provided.
+
+In order to star virtual cluster locally just run:
+
+```shell
+vagrant up
+```
+
+Don't forget to provide your key later on while doing activities on cluster, for instance:
+
+```shell
+cd ansible
+ansible-playbook -i {{env}} provisioning/site.yml  ***--private-key=~/.vagrant.d/insecure_private_key***
+```
 
 # Ansible - common commands
 
