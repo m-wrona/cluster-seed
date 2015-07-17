@@ -3,6 +3,7 @@
 Sample seed for creating cluster for web application.
 
 Cluster is built basing on:
+
 - Nginx: HTTP Server
 - Nginx: Load Balancer (separate instance)
 - Docker: virtualization 
@@ -86,22 +87,28 @@ CONTAINER ID        IMAGE               COMMAND                CREATED          
 b5b5663bea08        nginx:latest        "nginx -g 'daemon of   53 seconds ago      Up 52 seconds       0.0.0.0:10000->80/tcp, 0.0.0.0:10001->443/tcp   cluster-seed-dev-fe-1
 ```
 
-# Vagrant
+# Local development
 
-To speed up local testing & usage vagrant configuration is provided.
+To speed up local development & testing Vagrant configuration is provided.
 
-In order to star virtual cluster locally just run:
+In order to star virtual cluster locally just hit:
 
 ```shell
 vagrant up
 ```
 
-Don't forget to provide your key later on while doing activities on cluster, for instance:
+Don't forget to provide your key later on while performing any activities on cluster, for instance:
 
 ```shell
 cd ansible
-ansible-playbook -i {{env}} provisioning/site.yml  ***--private-key=~/.vagrant.d/insecure_private_key***
+# ansible with provided private key
+ansible-playbook -i {{env}} provisioning/site.yml  --private-key=~/.vagrant.d/insecure_private_key
 ```
+
+Once application is deployed it can be reached using any node, for instance:
+
+* http://10.10.2.20/
+* https://10.10.2.21/
 
 # Ansible - common commands
 
