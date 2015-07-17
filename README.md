@@ -72,20 +72,7 @@ cd ansible
 ansible-playbook -i {{env}} deployment/site.yml
 ```
 
-After deployment running instances can be checked using following command:
-
-```shell 
-ansible all -i {{env}} -a "docker ps"
-```
-
-Sample output of "docker ps":
-
-```preformated
-node1 | success | rc=0 >>
-CONTAINER ID        IMAGE               COMMAND                CREATED             STATUS              PORTS                                           NAMES
-9a3ee3b0b973        nginx:latest        "nginx -g 'daemon of   50 seconds ago      Up 49 seconds       0.0.0.0:80->80/tcp, 0.0.0.0:443->443/tcp        cluster-seed-dev-lb-1   
-b5b5663bea08        nginx:latest        "nginx -g 'daemon of   53 seconds ago      Up 52 seconds       0.0.0.0:10000->80/tcp, 0.0.0.0:10001->443/tcp   cluster-seed-dev-fe-1
-```
+Once application is deployed it can be reached via HTTP or HTTPS using cluster address or any node.
 
 # Local development
 
@@ -110,10 +97,34 @@ cd ansible
 ansible-playbook -i {{env}} provisioning/site.yml  --private-key=~/.vagrant.d/insecure_private_key
 ```
 
-Once application is deployed it can be reached using any node, for instance:
+# Checking cluster state
 
-- http://10.10.2.20/
-- https://10.10.2.21/
+After deployment running services on cluster can be checked using following command:
+
+```shell 
+ansible all -i {{env}} -a "docker ps "
+```
+
+For local cluster on Vagrant it looks like following:
+
+```shell 
+ansible all -i local -a "docker ps" --sudo --private-key=~/.vagrant.d/insecure_private_key
+```
+
+Sample output of "docker ps" for local cluster:
+
+```preformated
+cluster-node1 | success | rc=0 >>
+CONTAINER ID        IMAGE               COMMAND                CREATED             STATUS              PORTS                                           NAMES
+3f2c06d938d9        nginx               "nginx -g 'daemon of   2 hours ago         Up 23 minutes       0.0.0.0:80->80/tcp, 0.0.0.0:443->443/tcp        cluster-seed-dev-lb-1   
+a890a17c89b7        nginx               "nginx -g 'daemon of   2 hours ago         Up 23 minutes       0.0.0.0:10000->80/tcp, 0.0.0.0:10001->443/tcp   cluster-seed-dev-fe-1   
+
+cluster-node2 | success | rc=0 >>
+CONTAINER ID        IMAGE               COMMAND                CREATED             STATUS              PORTS                                           NAMES
+f72259ba854f        nginx               "nginx -g 'daemon of   2 hours ago         Up 23 minutes       0.0.0.0:80->80/tcp, 0.0.0.0:443->443/tcp        cluster-seed-dev-lb-1   
+e0de9527ed1e        nginx               "nginx -g 'daemon of   2 hours ago         Up 23 minutes       0.0.0.0:10000->80/tcp, 0.0.0.0:10001->443/tcp   cluster-seed-dev-fe-1   
+
+```
 
 # Ansible - common commands
 
