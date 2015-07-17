@@ -97,6 +97,11 @@ In order to star virtual cluster locally just hit:
 vagrant up
 ```
 
+After that two nodes will be started:
+
+- cluster-node1: 10.10.2.20
+- cluster-node2: 10.10.2.21
+
 Don't forget to provide your key later on while performing any activities on cluster, for instance:
 
 ```shell
@@ -107,8 +112,8 @@ ansible-playbook -i {{env}} provisioning/site.yml  --private-key=~/.vagrant.d/in
 
 Once application is deployed it can be reached using any node, for instance:
 
-* http://10.10.2.20/
-* https://10.10.2.21/
+- http://10.10.2.20/
+- https://10.10.2.21/
 
 # Ansible - common commands
 
