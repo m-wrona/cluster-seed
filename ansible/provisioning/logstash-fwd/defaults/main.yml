@@ -1,0 +1,4 @@
+---
+# docker files
+local_docker_dir: ../../../../docker/logstash-fwd
+remote_docker_dir: /root/docker/logstash-fwd

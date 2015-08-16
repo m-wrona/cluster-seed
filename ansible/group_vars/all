@@ -12,6 +12,7 @@ fe_dir: "../../../../fe"
 
 # docker
 nginx_image: nginx
+logstash_fwd_image: logstash-forward
 
 # ports available for the public (main cluster IO point)
 http_port: 80

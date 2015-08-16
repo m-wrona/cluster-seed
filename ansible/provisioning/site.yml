@@ -6,3 +6,4 @@
     - base
     - docker
     - nginx
+    - logstash-fwd

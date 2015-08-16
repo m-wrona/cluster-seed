@@ -8,6 +8,7 @@ Cluster is built basing on:
 - Nginx: Load Balancer (separate instance)
 - Docker: virtualization 
 - Ansible: deployment & provisioning
+- Logstash-forward: monitoring (see monitoring section)
 
 # Infrastructure
 

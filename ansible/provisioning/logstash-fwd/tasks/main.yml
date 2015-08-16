@@ -1,0 +1,20 @@
+---
+
+- name: Create logstash-forward remote docker directory
+  file: path={{ remote_docker_dir }} state=directory mode="u=rw,g=r"
+  tags:
+    - logstash-forward
+    - deploy
+
+
+- name: Copy logstash-forward docker file
+  copy: src="{{ local_docker_dir }}/" dest={{ remote_docker_dir }} mode="u=rw,g=r,o=r"
+  tags:
+      - logstash-forward
+      - deploy
+
+- name: Build logstash-forward docker image
+  docker_image: path="{{ remote_docker_dir }}" name="{{ logstash_fwd_image }}" state=build
+  tags:
+    - logstash-forward
+    - deploy
