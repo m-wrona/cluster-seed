@@ -30,3 +30,13 @@ lb_instances:
   - name: "{{ app_name }}-{{ env }}-lb-1"
     http_port: 80
     https_port: 443
+
+# logstash forward docker instances with ports for outside world
+logstash_fwd_port: 5043
+logstash_fwd_instances:
+  - name: "{{ app_name }}-{{ env }}-logstash_fwd-1"
+    port: 5043
+
+monitoring_nodes: 
+  - "10.10.2.30:{{ logstash_fwd_port }}"
+  - "10.10.2.31:{{ logstash_fwd_port }}"

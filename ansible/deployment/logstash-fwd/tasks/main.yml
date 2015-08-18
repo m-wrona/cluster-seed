@@ -1,0 +1,49 @@
+---
+
+- name: Create logstash-forward log directory
+  file: path={{ log_dir }} state=directory mode="u=rwx,g=rwx,o=rx"
+  tags:
+    - logstash-forward
+    - deploy
+
+- name: Create logstash-forward config directory
+  file: path={{ config_dir }} state=directory mode="u=rwx,g=rwx,o=rx"
+  tags:
+    - logstash-forward
+    - deploy
+
+- name: Copy logstash-forward configuration
+  template: src=monitoring.cfg dest="{{ config_dir }}/config.json" mode="u=rx,g=rx,o=rx"
+  tags:
+      - logstash-forward
+      - deploy
+
+- name: Stop logstash-forward docker containers
+  tags:
+    - logstash-forward
+    - deploy
+    - just-restart
+    - just-stop
+  docker:
+    name: "{{ item.name }}"
+    image: "{{ logstash_fwd_image }}"
+    state: stopped
+  with_items: logstash_fwd_instances
+
+- name: Start logstash-forward using docker
+  tags:
+    - logstash-forward
+    - deploy
+    - just-restart
+  docker:
+    name: "{{ item.name }}"
+    image: "{{ logstash_fwd_image }}"
+    state: reloaded
+    restart_policy: always
+    ports:
+    - "{{ item.port }}:{{ logstash_fwd_port }}"
+    volumes:
+    - "{{ config_dir }}:{{ remote_config_dir }}"
+    - "{{ log_dir }}:/var/log/logstash-forward"
+    - "{{ cert_dir }}:{{ cert_dir }}"
+  with_items: logstash_fwd_instances

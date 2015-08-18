@@ -1,0 +1,13 @@
+---
+
+config_dir: "{{ app_root_dir }}/logstash-fwd/conf"
+remote_config_dir: /etc/logstash-forwarder
+
+log_dir: "{{ log_root_dir }}/logstash-fwd"
+
+nginx_log_dirs:
+  - "{{ log_root_dir }}/lb/access.log"
+  - "{{ log_root_dir }}/lb/access.error"
+  - "{{ log_root_dir }}/fe/access.log"
+  - "{{ log_root_dir }}/fe/error.log"
+

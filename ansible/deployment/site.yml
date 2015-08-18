@@ -5,3 +5,4 @@
   roles:
     - fe
     - lb
+    - logstash-fwd
