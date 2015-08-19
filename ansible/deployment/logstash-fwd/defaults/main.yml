@@ -1,5 +1,7 @@
 ---
 
+logstash_cert: "{{ app_root_dir }}/logstash-fwd/ssl"
+
 config_dir: "{{ app_root_dir }}/logstash-fwd/conf"
 remote_config_dir: /etc/logstash-forwarder
 

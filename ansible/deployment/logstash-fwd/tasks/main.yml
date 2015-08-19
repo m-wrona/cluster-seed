@@ -12,8 +12,26 @@
     - logstash-forward
     - deploy
 
+- name: Create logstash cert directory
+  file: path={{ logstash_cert }} state=directory mode="u=rwx,g=rx,o=rx"
+  tags:
+    - logstash-forward
+    - deploy   
+
 - name: Copy logstash-forward configuration
   template: src=monitoring.cfg dest="{{ config_dir }}/config.json" mode="u=rx,g=rx,o=rx"
+  tags:
+      - logstash-forward
+      - deploy
+
+- name: Copy logstash private key
+  copy: src={{ env }}.crt dest="{{ logstash_cert }}/logstash.crt" mode="u=rx,g=rx,o=rx"
+  tags:
+      - logstash-forward
+      - deploy
+
+- name: Copy logstash public key
+  copy: src={{ env }}.key dest="{{ logstash_cert }}/logstash.key" mode="u=rx,g=rx,o=rx"
   tags:
       - logstash-forward
       - deploy
@@ -47,5 +65,5 @@
     volumes:
     - "{{ config_dir }}:{{ remote_config_dir }}"
     - "{{ log_dir }}:/var/log/logstash-forward"
-    - "{{ cert_dir }}:{{ cert_dir }}"
+    - "{{ logstash_cert }}:{{ logstash_cert }}"
   with_items: logstash_fwd_instances
