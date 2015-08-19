@@ -40,6 +40,8 @@
     image: "{{ logstash_fwd_image }}"
     state: reloaded
     restart_policy: always
+    expose:
+    - "{{ logstash_fwd_port }}"
     ports:
     - "{{ item.port }}:{{ logstash_fwd_port }}"
     volumes:
