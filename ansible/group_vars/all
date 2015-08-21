@@ -39,4 +39,3 @@ logstash_fwd_instances:
 
 monitoring_nodes: 
   - "10.10.2.30:{{ logstash_fwd_port }}"
-  - "10.10.2.31:{{ logstash_fwd_port }}"
