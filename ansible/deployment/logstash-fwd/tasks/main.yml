@@ -64,6 +64,6 @@
     - "{{ item.port }}:{{ logstash_fwd_port }}"
     volumes:
     - "{{ config_dir }}:{{ remote_config_dir }}"
-    - "{{ log_dir }}:/var/log/logstash-forward"
+    - "/var/log:/var/log"
     - "{{ logstash_cert }}:{{ logstash_cert }}"
   with_items: logstash_fwd_instances
