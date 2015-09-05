@@ -142,11 +142,21 @@ monitoring_nodes:
   - "10.10.2.30:{{ logstash_fwd_port }}"
 ```
 
+You can decide whether you want to send logs to all nodes of monitoring clusters or just single one.
+
+Elasticsearch will dispatch log information inside monitoring cluster anyway.
+
+However it's safer to send logs to at least two monitoring nodes just to be sure that they are handled
+
+even when monitoring cluster is only partially operational. 
+
+Set-up of monitoring cluster can be checked in repository [cluster-monitoring-seed](https://github.com/m-wrona/cluster-monitoring-seed)
+
+***Note:***
+
 Make sure that proper certificate is used on your production environment for logs forwarding.
 
 Like always for local environment sample certificate is provided.
-
-Set-up of monitoring cluster can be checked in repository [cluster-monitoring-seed](https://github.com/m-wrona/cluster-monitoring-seed)
 
 # Ansible - common commands
 
