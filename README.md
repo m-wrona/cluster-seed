@@ -127,6 +127,27 @@ e0de9527ed1e        nginx               "nginx -g 'daemon of   2 hours ago      
 
 ```
 
+# Monitoring
+
+Cluster is prepared for monitoring using ELK stack (elasticsearch-logstash-kibana).
+
+Therefore logstash-forward service is installed by default on cluster nodes in order to be able
+
+to send logs to our monitoring cluster. 
+
+Monotoring nodes property in ansible/group_vars/all is defining where logs will be sent: 
+
+```
+monitoring_nodes: 
+  - "10.10.2.30:{{ logstash_fwd_port }}"
+```
+
+Make sure that proper certificate is used on your production environment for logs forwarding.
+
+Like always for local environment sample certificate is provided.
+
+Set-up of monitoring cluster can be checked in repository [cluster monitoring seed](https://github.com/m-wrona/cluster-monitoring-seed)
+
 # Ansible - common commands
 
 Some samples of handy commands to be familiar with. 

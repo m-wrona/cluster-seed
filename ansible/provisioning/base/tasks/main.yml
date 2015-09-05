@@ -13,3 +13,8 @@
       - base
       - provision
 
+- name: Make sure curl in installed
+  apt: name=curl state=present
+  tags:
+      - base
+      - provision
