@@ -14,7 +14,7 @@
     - provision
 
 - name: Install docker if it's not present
-  shell: wget -qO- https://get.docker.com/ | sh
+  shell: curl -sSL https://get.docker.com/ | shell
   when: not is_docker_cmd_present.stat.exists
   tags:
     - docker
