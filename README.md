@@ -146,7 +146,7 @@ Make sure that proper certificate is used on your production environment for log
 
 Like always for local environment sample certificate is provided.
 
-Set-up of monitoring cluster can be checked in repository [cluster monitoring seed](https://github.com/m-wrona/cluster-monitoring-seed)
+Set-up of monitoring cluster can be checked in repository [cluster-monitoring-seed](https://github.com/m-wrona/cluster-monitoring-seed)
 
 # Ansible - common commands
 
